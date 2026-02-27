@@ -15,20 +15,21 @@ class FeedViewModel: ObservableObject {
     @Published var connectionStatus: ConnectionStatus = .disconnected
     @Published var isLoading = false
     
-    private let webSocketManager = WebSocketManager.shared
+    private let webSocketManager: WebSocketManaging
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    init(webSocketManager: WebSocketManaging? = nil) {
+        self.webSocketManager = webSocketManager ?? WebSocketManager.shared
         setupWebSocketBindings()
         loadInitialStocks()
     }
     
     private func setupWebSocketBindings() {
-        webSocketManager.$connectionStatus
+        webSocketManager.connectionStatusPublisher
             .receive(on: DispatchQueue.main)
             .assign(to: &$connectionStatus)
         
-        webSocketManager.$receivedUpdates
+        webSocketManager.receivedUpdatesPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updates in
                 self?.handlePriceUpdates(updates)

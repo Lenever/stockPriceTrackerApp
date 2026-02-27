@@ -9,11 +9,14 @@ import Foundation
 import Combine
 import SwiftUI
 
-final class WebSocketManager: ObservableObject {
+final class WebSocketManager: ObservableObject, WebSocketManaging {
     static let shared = WebSocketManager()
     
     @Published var connectionStatus: ConnectionStatus = .disconnected
     @Published var receivedUpdates: [PriceUpdate] = []
+    
+    var connectionStatusPublisher: Published<ConnectionStatus>.Publisher { $connectionStatus }
+    var receivedUpdatesPublisher: Published<[PriceUpdate]>.Publisher { $receivedUpdates }
     
     private var webSocketTask: URLSessionWebSocketTask?
     private var timer: Timer?

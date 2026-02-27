@@ -16,13 +16,13 @@ class SymbolDetailViewModel: ObservableObject {
     @Published var isAnimating = false
     @Published var isLoading = false
     
-    private let webSocketManager: WebSocketManager
+    private let webSocketManager: WebSocketManaging
     private let symbol: String
     private var cancellables = Set<AnyCancellable>()
     
-    init(stock: StockSymbol, webSocketManager: WebSocketManager? = nil) {
+    init(stock: StockSymbol, webSocketManager: WebSocketManaging? = nil) {
         self.symbol = stock.symbol
-        self.webSocketManager = webSocketManager ?? .shared
+        self.webSocketManager = webSocketManager ?? WebSocketManager.shared
         self.stock = stock
         self.priceHistory = [stock.currentPrice]
         
@@ -53,8 +53,8 @@ class SymbolDetailViewModel: ObservableObject {
     
     deinit {
         let capturedSymbol = symbol
-        DispatchQueue.main.async {
-            WebSocketManager.shared.unsubscribeFromSymbol(capturedSymbol)
+        DispatchQueue.main.async { [weak self] in
+            self?.webSocketManager.unsubscribeFromSymbol(capturedSymbol)
         }
     }
     
