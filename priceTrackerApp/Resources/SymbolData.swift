@@ -24,10 +24,6 @@ struct SymbolData {
         return Double.random(in: 50...500)
     }
     
-    static func getRandomPriceChange() -> Double {
-        return Double.random(in: -5...5)
-    }
-    
     static func createInitialStocks(count: Int = 25) -> [StockSymbol] {
         let symbols = Array(stockSymbols.prefix(count))
         return symbols.map { StockSymbol(symbol: $0) }

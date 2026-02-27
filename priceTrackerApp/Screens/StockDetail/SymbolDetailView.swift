@@ -28,6 +28,8 @@ struct SymbolDetailView: View {
             }
             .padding()
         }
+        .background(viewModel.backgroundColor)
+        .animation(.easeInOut(duration: Constants.UI.flashAnimationDuration), value: viewModel.isAnimating)
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -58,6 +60,7 @@ struct SymbolDetailView: View {
             HStack {
                 Text(viewModel.stock.formattedPrice)
                     .font(.system(size: 48, weight: .bold, design: .rounded))
+                    .foregroundColor(viewModel.priceChangeColor)
                 
                 Spacer()
             }
@@ -65,9 +68,11 @@ struct SymbolDetailView: View {
             HStack {
                 Text(viewModel.stock.priceChangeSymbol)
                     .font(.title2)
+                    .foregroundColor(viewModel.priceChangeColor)
                 
                 Text(viewModel.stock.formattedPriceChange)
                     .font(.title3)
+                    .foregroundColor(viewModel.priceChangeColor)
                 
                 Spacer()
             }

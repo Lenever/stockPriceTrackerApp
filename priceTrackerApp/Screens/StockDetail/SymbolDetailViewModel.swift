@@ -20,9 +20,9 @@ class SymbolDetailViewModel: ObservableObject {
     private let symbol: String
     private var cancellables = Set<AnyCancellable>()
     
-    init(stock: StockSymbol, webSocketManager: WebSocketManager = .shared) {
+    init(stock: StockSymbol, webSocketManager: WebSocketManager? = nil) {
         self.symbol = stock.symbol
-        self.webSocketManager = webSocketManager
+        self.webSocketManager = webSocketManager ?? .shared
         self.stock = stock
         self.priceHistory = [stock.currentPrice]
         
@@ -47,6 +47,7 @@ class SymbolDetailViewModel: ObservableObject {
             if priceHistory.count > 50 {
                 priceHistory.removeFirst()
             }
+            triggerPriceAnimation()
         }
     }
     
@@ -55,6 +56,32 @@ class SymbolDetailViewModel: ObservableObject {
         DispatchQueue.main.async {
             WebSocketManager.shared.unsubscribeFromSymbol(capturedSymbol)
         }
+    }
+    
+    private func triggerPriceAnimation() {
+        withAnimation(.easeInOut(duration: Constants.UI.priceUpdateAnimationDuration)) {
+            isAnimating = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.UI.flashAnimationDuration) {
+            withAnimation(.easeInOut(duration: Constants.UI.priceUpdateAnimationDuration)) {
+                self.isAnimating = false
+            }
+        }
+    }
+    
+    var priceChangeColor: Color {
+        if isAnimating {
+            return stock.isPriceUp ? .green : stock.isPriceDown ? .red : .primary
+        }
+        return .primary
+    }
+    
+    var backgroundColor: Color {
+        if isAnimating {
+            return stock.isPriceUp ? .green.opacity(0.1) : stock.isPriceDown ? .red.opacity(0.1) : .clear
+        }
+        return .clear
     }
     
     var description: String {
@@ -76,3 +103,4 @@ class SymbolDetailViewModel: ObservableObject {
         }
     }
 }
+

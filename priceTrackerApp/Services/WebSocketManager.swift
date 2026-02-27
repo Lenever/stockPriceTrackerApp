@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-class WebSocketManager: ObservableObject {
+final class WebSocketManager: ObservableObject {
     static let shared = WebSocketManager()
     
     @Published var connectionStatus: ConnectionStatus = .disconnected
@@ -27,7 +27,6 @@ class WebSocketManager: ObservableObject {
     private init() {}
     
     deinit {
-//        disconnect()
         timer?.invalidate()
         webSocketTask?.cancel(with: .normalClosure, reason: nil)
     }
