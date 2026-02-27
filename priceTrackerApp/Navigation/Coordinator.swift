@@ -28,7 +28,7 @@ class Coordinator: ObservableObject {
     func build(page: Routes) -> some View {
         switch page {
         case .feed: FeedView()
-        case .stockDetails(let symbol): StockDetailView(symbol: symbol)
+        case .symbolDetail(let stock): SymbolDetailView(stock: stock)
         }
     }
 }

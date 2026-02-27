@@ -55,7 +55,7 @@ struct FeedView: View {
             StockRowView(stock: stock)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    coordinator.push(page: .stockDetails(stock.symbol))
+                    coordinator.push(page: .symbolDetail(stock))
                 }
         }
         .listStyle(PlainListStyle())
