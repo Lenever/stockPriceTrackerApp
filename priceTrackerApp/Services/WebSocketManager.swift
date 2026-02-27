@@ -9,7 +9,6 @@ import Foundation
 import Combine
 import SwiftUI
 
-@MainActor
 class WebSocketManager: ObservableObject {
     static let shared = WebSocketManager()
     

@@ -9,5 +9,5 @@ import Foundation
 
 enum Routes: Hashable {
     case feed
-    case stockDetails
+    case stockDetails(String)
 }
