@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct StockSymbol: Identifiable, Equatable, Hashable {
-    let id = UUID()
+struct StockSymbol: Equatable, Hashable {
     let symbol: String
     var currentPrice: Double
     var previousPrice: Double
@@ -59,10 +58,10 @@ struct StockSymbol: Identifiable, Equatable, Hashable {
     }
     
     static func == (lhs: StockSymbol, rhs: StockSymbol) -> Bool {
-        lhs.id == rhs.id
+        lhs.symbol == rhs.symbol
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(symbol)
     }
 }

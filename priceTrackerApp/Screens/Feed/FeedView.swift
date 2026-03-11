@@ -51,7 +51,7 @@ struct FeedView: View {
     }
     
     private var stockListView: some View {
-        List(viewModel.stocks) { stock in
+        List(viewModel.stocks, id: \.symbol) { stock in
             StockRowView(stock: stock)
                 .contentShape(Rectangle())
                 .onTapGesture {

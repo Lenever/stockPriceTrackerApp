@@ -72,11 +72,11 @@ final class WebSocketManager: ObservableObject, WebSocketManaging {
     }
     
     private func generateAndSendPriceUpdate() {
-        let symbol = SymbolData.getRandomSymbol()
-        let newPrice = SymbolData.getRandomPrice()
-        let priceUpdate = PriceUpdate(symbol: symbol, price: newPrice)
-        
-        sendMessage(priceUpdate)
+        SymbolData.stockSymbols.forEach { symbol in
+            let newPrice = SymbolData.getRandomPrice()
+            let priceUpdate = PriceUpdate(symbol: symbol, price: newPrice)
+            sendMessage(priceUpdate)
+        }
     }
     
     private func sendMessage(_ priceUpdate: PriceUpdate) {
